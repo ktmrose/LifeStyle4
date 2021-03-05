@@ -39,7 +39,7 @@ public class DashDisplayFrag extends Fragment {
         mTvBMR.setText("" + "--");
         mTvFitnessGoal.setText("" + "--");
         mTvDailyCalories.setText("" + "--");
-        //TODO: set userData observer
+
         mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
         mViewModel.getUserData().observe(getActivity(), new Observer<UserData>() {
             @Override
@@ -50,10 +50,7 @@ public class DashDisplayFrag extends Fragment {
                     mIvImgThumb.setImageBitmap(thumbNailImg);
                 }
 
-                if(userData.getName() != null) {
-                    mUserName = userData.getName();
-                    mTvUserName.setText(mUserName);
-                }
+                mUserName = userData.getName();
 
                 mTvFitnessGoal.setText("change your weight by " + userData.getWeightMod() + " pounds this week.");
 
@@ -63,6 +60,9 @@ public class DashDisplayFrag extends Fragment {
                 mTvDailyCalories.setText("" + mDailyCalories);
             }
         });
+        if(mUserName != null) {
+            mTvUserName.setText(mUserName);
+        }
         return view;
     }
 

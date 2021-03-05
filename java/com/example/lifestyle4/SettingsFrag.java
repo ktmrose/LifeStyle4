@@ -223,18 +223,7 @@ public class SettingsFrag extends Fragment implements View.OnClickListener {
                 //pass it to view model
                 setUserInfo(user);
 
-//                Intent mainIntent = new Intent(getContext(), MainActivity.class);
-//                Bundle intentBundle = new Bundle();
-//                intentBundle.putString("USER_NAME", mUserName);
-//                intentBundle.putString("IMAGE_PATH", mImgPath);
-
-                double bmr = NutritionCalcsUtil.getBmr(isFemale, mWeight, mHeightFeet, mHeightInches, mAge);
-//
-//                intentBundle.putDouble("USER_BMR", bmr);
-//                mainIntent.putExtra("SETTINGS_BUNDLE", intentBundle);
-
                 Toast.makeText(getContext(), "Save Successful!", Toast.LENGTH_SHORT).show();
-//                startActivity(mainIntent);
                 break;
             }
         }
