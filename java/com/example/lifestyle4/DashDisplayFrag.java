@@ -35,6 +35,10 @@ public class DashDisplayFrag extends Fragment {
         mTvBMR = (TextView) view.findViewById(R.id.bmrDynamic);
         mIvImgThumb = (ImageView) view.findViewById(R.id.profilePic);
 
+        mTvUserName.setText("");
+        mTvBMR.setText("" + "--");
+        mTvFitnessGoal.setText("" + "--");
+        mTvDailyCalories.setText("" + "--");
         //TODO: set userData observer
         mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
         mViewModel.getUserData().observe(getActivity(), new Observer<UserData>() {
@@ -48,59 +52,17 @@ public class DashDisplayFrag extends Fragment {
 
                 if(userData.getName() != null) {
                     mUserName = userData.getName();
-                    mTvUserName.setText("" + mUserName);
+                    mTvUserName.setText(mUserName);
                 }
 
                 mTvFitnessGoal.setText("change your weight by " + userData.getWeightMod() + " pounds this week.");
 
-                if (mBMR != 0) {
-                    mBMR = getBmr(userData.userIsFemale(), userData.getWeight(), userData.getHeightFt(), userData.getHeightIn(), userData.getAge());
-                    mDailyCalories = getCaloricNeeds(mBMR, userData.userIsActive(), userData.getWeightMod());
-                    mTvBMR.setText("" + mBMR);
-                    mTvDailyCalories.setText("" + mDailyCalories);
-                } else {
-                    mTvBMR.setText("--");
-                    mTvDailyCalories.setText("--");
-                }
+                mBMR = getBmr(userData.userIsFemale(), userData.getWeight(), userData.getHeightFt(), userData.getHeightIn(), userData.getAge());
+                mDailyCalories = getCaloricNeeds(mBMR, userData.userIsActive(), userData.getWeightMod());
+                mTvBMR.setText("" + mBMR);
+                mTvDailyCalories.setText("" + mDailyCalories);
             }
         });
-
-//        Bundle arguments = getArguments();
-//        if (arguments != null) {
-//
-//            mUserName = arguments.getString("USER_NAME");
-//            mFitnessGoal = "change your weight by " + arguments.getDouble("MOD_GOAL", 0) + " pounds this week.";
-//            mImgPath = arguments.getString("IMAGE_PATH");
-//            mDailyCalories = arguments.getInt("DAILY_CALORIES");
-//            mBMR = (int) arguments.getDouble("USER_BMR");
-//
-//            Bitmap thumbNailImg = BitmapFactory.decodeFile(mImgPath);
-//            if (thumbNailImg != null)
-//                mIvImgThumb.setImageBitmap(thumbNailImg);
-//
-//            if(mUserName != null)
-//                mTvUserName.setText("" + mUserName);
-//
-//            if (mFitnessGoal != null)
-//                mTvFitnessGoal.setText("" + mFitnessGoal);
-//
-//            if (mDailyCalories != 0)
-//                mTvDailyCalories.setText("" + mDailyCalories);
-//            else
-//                mTvDailyCalories.setText("--");
-//
-//            if (mBMR != 0)
-//                mTvBMR.setText("" + mBMR);
-//            else
-//                mTvBMR.setText("--");
-//
-//        } else {
-//
-//            mTvUserName.setText("--");
-//            mTvDailyCalories.setText("--");
-//            mTvFitnessGoal.setText("--");
-//            mTvBMR.setText("--");
-//        }
         return view;
     }
 

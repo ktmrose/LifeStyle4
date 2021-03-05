@@ -2,6 +2,7 @@ package com.example.lifestyle4;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import java.io.File;
@@ -66,25 +68,63 @@ public class SettingsFrag extends Fragment implements View.OnClickListener {
         mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
 
         //populate them
+        mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
+        mViewModel.getUserData().observe(getActivity(), new Observer<UserData>() {
+            @Override
+            public void onChanged(UserData userData) {
+
+                if (userData == null)
+                    return;
+
+                Bitmap thumbNailImg = BitmapFactory.decodeFile(userData.getImgPath());
+                if (thumbNailImg != null) {
+                    mImgPath = userData.getImgPath();
+                    mIvProfilePic.setImageBitmap(thumbNailImg);
+                }
+
+                if(userData.getName() != null) {
+                    mUserName = userData.getName();
+                    mEtUserName.setText(mUserName);
+                }
+
+                if (!userData.userIsFemale())
+                    isFemale = false;
+
+                mAge = userData.getAge();
+                mHeightFeet = userData.getHeightFt();
+                mHeightInches = userData.getHeightIn();
+
+//                mEtAge.setText(userData.getAge());
+//                mEtHeightFeet.setText(userData.getHeightFt());
+//                mEtHeightInches.setText(userData.getHeightIn());
+//                mEtWeight.setText(userData.getWeight());
+            }
+        });
+
         if (mUserName != null)
             mEtUserName.setText(mUserName);
 
         if (mAge > 0)
-            mEtAge.setText(mAge);
+            mEtAge.setText("" + mAge);
 
         if (mHeightFeet > 0)
-            mEtHeightFeet.setText(mHeightFeet);
+            mEtHeightFeet.setText("" + mHeightFeet);
 
         if (mHeightInches > 0)
-            mEtHeightInches.setText(mHeightInches);
+            mEtHeightInches.setText("" + mHeightInches);
 
         if (mWeight > 0)
-            mEtWeight.setText(mWeight);
+            mEtWeight.setText("" + mWeight);
+
+        if (isFemale) {
+            mFemaleBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
+            mMaleBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.light_green));
+        } else {
+            mMaleBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
+            mFemaleBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.light_green));
+        }
+
         return view;
-    }
-
-    private void updateViewModel(UserData userData){
-
     }
 
     @Override
