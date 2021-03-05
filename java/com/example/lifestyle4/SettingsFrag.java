@@ -87,17 +87,15 @@ public class SettingsFrag extends Fragment implements View.OnClickListener {
                     mEtUserName.setText(mUserName);
                 }
 
-                if (!userData.userIsFemale())
+                if (userData.userIsFemale())
+                    isFemale = true;
+                else
                     isFemale = false;
 
                 mAge = userData.getAge();
                 mHeightFeet = userData.getHeightFt();
                 mHeightInches = userData.getHeightIn();
-
-//                mEtAge.setText(userData.getAge());
-//                mEtHeightFeet.setText(userData.getHeightFt());
-//                mEtHeightInches.setText(userData.getHeightIn());
-//                mEtWeight.setText(userData.getWeight());
+                mWeight = userData.getWeight();
             }
         });
 
