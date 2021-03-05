@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#004A33">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#157359"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/settings_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textAlignment="center"
+            android:textColor="#e6e6e6"
+            android:textSize="@android:dimen/app_icon_size"
+            android:fontFamily="casual"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/settings_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/name_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="#157359"
+        android:text="Name:"
+        android:textSize="18sp"
+        android:fontFamily="casual"
+        android:textColor="#e6e6e6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_name_dyn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/user_name_dyn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:textColor="#e6e6e6"
+        android:inputType="textPersonName|textCapWords"
+        android:text="Enter name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <TextView
+        android:id="@+id/user_age_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="#157359"
+        android:fontFamily="casual"
+        android:text="Age:"
+        android:textSize="18sp"
+        android:textColor="#e6e6e6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_age_dyn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/user_age_dyn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:ems="10"
+
+        android:fontFamily="casual"
+        android:inputType="number"
+        android:textColor="#e6e6e6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name_dyn" />
+
+    <TextView
+        android:id="@+id/user_height_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="#157359"
+        android:text="Height"
+        android:textSize="18sp"
+        android:fontFamily="casual"
+        android:textColor="#e6e6e6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_feet"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/user_feet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="16dp"
+        android:ems="5"
+        android:fontFamily="casual"
+        android:inputType="number"
+        android:textColor="#e6e6e6"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/feet_static"
+        app:layout_constraintEnd_toStartOf="@+id/feet_static" />
+
+    <EditText
+        android:id="@+id/user_inches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="5"
+        android:fontFamily="casual"
+        android:textAlignment="center"
+        android:inputType="number"
+        android:textColor="#e6e6e6"
+        app:layout_constraintEnd_toStartOf="@+id/inches_static"
+        app:layout_constraintTop_toBottomOf="@+id/user_age_dyn" />
+
+    <TextView
+        android:id="@+id/feet_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:text="ft."
+        android:fontFamily="casual"
+        android:textColor="#e6e6e6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_inches"
+        app:layout_constraintEnd_toStartOf="@+id/user_inches" />
+
+    <TextView
+        android:id="@+id/inches_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:text="in."
+        android:fontFamily="casual"
+        android:textColor="#e6e6e6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_inches"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/user_weight_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:text="Weight"
+        android:textSize="18sp"
+        android:fontFamily="casual"
+        android:background="#157359"
+        android:textColor="#e6e6e6"
+        app:layout_constraintBaseline_toBaselineOf="@+id/user_weight_input"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/user_weight_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:ems="10"
+        android:fontFamily="casual"
+        android:inputType="number"
+        android:textColor="#e6e6e6"
+        app:layout_constraintEnd_toStartOf="@+id/pounds_static"
+        app:layout_constraintTop_toBottomOf="@+id/user_feet" />
+
+    <TextView
+        android:id="@+id/pounds_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:text="lbs."
+        android:fontFamily="casual"
+        android:textColor="#e6e6e6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_inches" />
+
+    <ImageButton
+        android:id="@+id/male_btn"
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:layout_marginHorizontal="16dp"
+        android:adjustViewBounds="true"
+        android:background="#157359"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/take_picture_btn"
+        app:layout_constraintEnd_toStartOf="@+id/user_inches"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_weight_input"
+        app:srcCompat="@drawable/male" />
+
+    <ImageButton
+        android:id="@+id/female_btn"
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:layout_marginHorizontal="16dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="#157359"
+        android:scaleType="fitCenter"
+
+        app:layout_constraintBottom_toTopOf="@+id/profile_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/male_btn"
+        app:layout_constraintTop_toBottomOf="@+id/user_weight_input"
+        app:srcCompat="@drawable/female" />
+
+    <ImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/submitSettings_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/user_feet"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/take_picture_btn"
+        android:layout_width="@android:dimen/notification_large_icon_width"
+        android:layout_height="@android:dimen/notification_large_icon_height"
+        android:backgroundTint="#BD8E36"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+        app:layout_constraintEnd_toStartOf="@+id/profile_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_pic"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <Button
+        android:id="@+id/submitSettings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:fontFamily="casual"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:backgroundTint="#BD8E36"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="173dp"
+        tools:layout_editor_absoluteY="380dp"></LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
