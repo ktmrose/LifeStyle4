@@ -12,13 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 public class SetFitGoals extends Fragment implements View.OnClickListener{
 
     private Button mYesBtn, mNoBtn, mLoseWeight, mMaintainWeight, mGainWeight;
-    private boolean mIsFit;
+    private boolean mIsFit, mIsLosingWeight, mIsGainingWeight;
     private double mWeightMod;
-    private FitnessGoalsDataPasser mFitGoalsData;
+//    private FitnessGoalsDataPasser mFitGoalsData;
+    private LifeStyleViewModel mViewModel;
+    private UserData mUserData;
 
     @Nullable
     @Override
@@ -39,12 +43,37 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
         mMaintainWeight.setOnClickListener(this);
         mGainWeight.setOnClickListener(this);
 
-        if (savedInstanceState != null) {
+        mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
+        mViewModel.getUserData().observe(getActivity(), new Observer<UserData>() {
 
-            savedInstanceState.getBoolean("IS_ACTIVE");
-            savedInstanceState.getDouble("WEIGHT_MOD", 0);
-            resetButtonColors();
-        }
+            @Override
+            public void onChanged(UserData userData) {
+
+                if (userData.userIsActive())
+                    mIsFit = true;
+                else
+                    mIsFit = false;
+
+                mWeightMod = userData.getWeightMod();
+                if (mWeightMod > 0) {
+
+                    mIsGainingWeight = true;
+                    mIsLosingWeight = false;
+                } else if (mWeightMod < 0) {
+
+                    mIsLosingWeight = true;
+                    mIsGainingWeight = false;
+                } else {
+
+                    mIsGainingWeight = false;
+                    mIsLosingWeight = false;
+                }
+
+                mUserData = userData;
+            }
+        });
+
+        resetButtonColors();
         return view;
     }
 
@@ -60,12 +89,12 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
             mYesBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
         }
 
-        if (mWeightMod > 0) {
+        if (mIsGainingWeight) {
 
             mGainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
             mLoseWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
             mMaintainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
-        } else if (mWeightMod < 0) {
+        } else if (mIsLosingWeight) {
 
             mLoseWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
             mMaintainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
@@ -78,68 +107,75 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
         }
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            mFitGoalsData = (FitnessGoalsDataPasser) context;
-        } catch (Exception e) {
-            throw new ClassCastException(context.toString() + "must implement SetFitGoalsDataPasser");
-        }
-    }
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        try {
+//            mFitGoalsData = (FitnessGoalsDataPasser) context;
+//        } catch (Exception e) {
+//            throw new ClassCastException(context.toString() + "must implement SetFitGoalsDataPasser");
+//        }
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
 
+        //TODO: move setting of user data to separate thread?
         switch (v.getId()) {
             case R.id.excerciseYes: {
 
                 mIsFit = true;
                 mYesBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
                 mNoBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
+                mUserData.setIsActive(true);
                 break;
             }
             case R.id.excerciseNo: {
 
                 mIsFit = false;
+                mUserData.setIsActive(false);
                 mNoBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
                 mYesBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
                 break;
             }
             case R.id.lose_weight_btn: {
 
+                mUserData.setIsLosingWeight(true);
+                mUserData.setIsGainingWeight(false);
+
                 mLoseWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
                 mMaintainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
                 mGainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
-
-                mFitGoalsData.fitGoalsData(mIsFit, mWeightMod*-1, 1); //sign indicates gain or loss
                 break;
             }
             case R.id.maintain_weight_btn: {
 
+                mUserData.setIsLosingWeight(false);
+                mUserData.setIsGainingWeight(false);
+
                 mWeightMod = 0;
+                mUserData.setWeightMod(0);
                 mMaintainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
                 mLoseWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
                 mGainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
-                mFitGoalsData.fitGoalsData(mIsFit, mWeightMod, 0);
                 break;
             }
             case R.id.gain_weight_btn: {
 
+                mUserData.setIsLosingWeight(false);
+                mUserData.setIsGainingWeight(true);
                 mGainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
                 mLoseWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
                 mMaintainWeight.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
-
-                mFitGoalsData.fitGoalsData(mIsFit, mWeightMod, 2);
                 break;
             }
         }
     }
 
-    public interface FitnessGoalsDataPasser {
-        public void fitGoalsData(boolean isActive, double weightMod, int fragmentCode);
-    }
+//    public interface FitnessGoalsDataPasser {
+//        public void fitGoalsData(boolean isActive, double weightMod, int fragmentCode);
+//    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

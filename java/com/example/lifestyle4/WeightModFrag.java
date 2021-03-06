@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 public class WeightModFrag extends Fragment implements View.OnClickListener{
 
@@ -23,6 +25,8 @@ public class WeightModFrag extends Fragment implements View.OnClickListener{
     WeightModDataPasser mModDataPasser;
     TextView mWeightModDisplay;
     boolean isGainingWeight;
+
+    LifeStyleViewModel mViewModel;
 
     //error message
     AlertDialog.Builder mAlertBuilder;
@@ -39,14 +43,21 @@ public class WeightModFrag extends Fragment implements View.OnClickListener{
         mWeightModDisplay = view.findViewById(R.id.modPounds_dynamic);
         mAlertBuilder = new AlertDialog.Builder(getContext());
 
-        Bundle bundle = getArguments();
-        if (bundle != null)
-            isGainingWeight = bundle.getBoolean("GAIN_WEIGHT");
+        mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
+        mViewModel.getUserData().observe(getActivity(), new Observer<UserData>() {
+            @Override
+            public void onChanged(UserData userData) {
 
-        if (isGainingWeight)
-            mWeightModDisplay.setText("" + "gain");
-        else
-            mWeightModDisplay.setText("" + "lose");
+            }
+        });
+//        Bundle bundle = getArguments();
+//        if (bundle != null)
+//            isGainingWeight = bundle.getBoolean("GAIN_WEIGHT");
+//
+//        if (isGainingWeight)
+//            mWeightModDisplay.setText("" + "gain");
+//        else
+//            mWeightModDisplay.setText("" + "lose");
 
         return view;
     }

@@ -4,7 +4,7 @@ public class UserData {
     private String mName, mImgPath, mLocation;
     private int mAge, mHeightFt, mHeightIn, mWeight;
     private double mWeightMod;
-    private boolean mIsActive, mIsFemale;
+    private boolean mIsActive, mIsFemale, mIsGainingWeight, mIsLosingWight;
 
     public String getName() {
         return mName;
@@ -84,5 +84,11 @@ public class UserData {
         this.mIsFemale = isFemale;
     }
 
+    public boolean isGainingWeight() { return mIsGainingWeight; }
 
+    public void setIsGainingWeight(boolean mIsGainingWeight) { this.mIsGainingWeight = mIsGainingWeight; }
+
+    public boolean isLosingWeight() { return mIsLosingWight; }
+
+    public void setIsLosingWeight(boolean mIsLosingWight) { this.mIsLosingWight = mIsLosingWight; }
 }

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, SetFitGoals.FitnessGoalsDataPasser, WeightModFrag.WeightModDataPasser {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LifeStyleViewModel mViewModel;
     private ImageButton mSetFitGoalsBtn, mSettingsBtn, mWeatherBtn;
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Create the view model
         mViewModel = ViewModelProviders.of(this).get(LifeStyleViewModel.class);
+        //TODO: observer for isGaining/ isLosing weight
     }
 
     @Override
@@ -173,71 +174,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         savedInstanceState.getBoolean("USER_ACTIVE", false);
     }
 
-    @Override
-    public void fitGoalsData(boolean isActive, double weightMod, int fragmentCode) {
-        mIsActive = isActive;
-        mWeightModGoal = weightMod;
-        mDailyCalories = NutritionCalcsUtil.getDailyCalories(mBmr, mIsActive, mWeightModGoal);
+//    @Override
+//    public void fitGoalsData(boolean isActive, double weightMod, int fragmentCode) {
+//        mIsActive = isActive;
+//        mWeightModGoal = weightMod;
+//        mDailyCalories = NutritionCalcsUtil.getDailyCalories(mBmr, mIsActive, mWeightModGoal);
+//
+//        Bundle modDisplayBundle = new Bundle();
+//        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+//
+//        if (fragmentCode == 1) { // lose weight
+//
+//            mWeightMod = new WeightModFrag();
+//            modDisplayBundle.putBoolean("GAIN_WEIGHT", false);
+//            mWeightMod.setArguments(modDisplayBundle);
+//            fTrans.replace(R.id.ph_dash_display, mWeightMod, "weight_loss_fragment");
+//        } else if (fragmentCode == 2) { // gain weight
+//
+//            mWeightMod = new WeightModFrag();
+//            modDisplayBundle.putBoolean("GAIN_WEIGHT", true);
+//            mWeightMod.setArguments(modDisplayBundle);
+//            fTrans.replace(R.id.ph_dash_display, mWeightMod, "weight_gain_Fragment");
+//        } else {
+//            System.out.println("Something went wrong when displaying fragments in Main Activity");
+//        }
+//
+//        fTrans.commit();
+//    }
 
-        Bundle modDisplayBundle = new Bundle();
-        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-
-        if (fragmentCode == 1) { // lose weight
-
-            mWeightMod = new WeightModFrag();
-            modDisplayBundle.putBoolean("GAIN_WEIGHT", false);
-            mWeightMod.setArguments(modDisplayBundle);
-            fTrans.replace(R.id.ph_dash_display, mWeightMod, "weight_loss_fragment");
-        } else if (fragmentCode == 2) { // gain weight
-
-            mWeightMod = new WeightModFrag();
-            modDisplayBundle.putBoolean("GAIN_WEIGHT", true);
-            mWeightMod.setArguments(modDisplayBundle);
-            fTrans.replace(R.id.ph_dash_display, mWeightMod, "weight_gain_Fragment");
-        } else {
-            System.out.println("Something went wrong when displaying fragments in Main Activity");
-        }
-
-        fTrans.commit();
-    }
-
-    @Override
-    public void onWeightModData(double weightMod) {
+//    @Override
+//    public void onWeightModData(double weightMod) {
+//
+//        mWeightModGoal = weightMod;
+//
+//        if (mDailyCalories < 1000) {
+//            Toast.makeText(this, "I think you should update your settings", Toast.LENGTH_LONG).show();
+//
+//            //opens settings panel
+//            mSettings = new SettingsFrag();
+//            FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+//            fTrans.replace(R.id.ph_dash_display, mSettings, "settings");
+//            fTrans.commit();
+//
+//            //hide buttons
+//            mWeatherBtn.setVisibility(View.INVISIBLE);
+//            mSettingsBtn.setVisibility(View.INVISIBLE);
+//            return;
+//        }
         
-        mWeightModGoal = weightMod;
-
-        if (mDailyCalories < 1000) {
-            Toast.makeText(this, "I think you should update your settings", Toast.LENGTH_LONG).show();
-
-            //opens settings panel
-            mSettings = new SettingsFrag();
-            FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-            fTrans.replace(R.id.ph_dash_display, mSettings, "settings");
-            fTrans.commit();
-
-            //hide buttons
-            mWeatherBtn.setVisibility(View.INVISIBLE);
-            mSettingsBtn.setVisibility(View.INVISIBLE);
-            return;
-        }
-        
-        mDailyCalories = NutritionCalcsUtil.getDailyCalories(mBmr, mIsActive, mWeightModGoal);
-        if (mDailyCalories < 1000)
-            Toast.makeText(this, "If you did that, you'd be eating less than 1000 calories! That's not sustainable!", Toast.LENGTH_LONG).show();
-        else {
-            //send to display fragment
-            mDashDisplay = new DashDisplayFrag();
-            Bundle bundle = new Bundle();
-            bundle.putDouble("USER_BMR", mBmr);
-            bundle.putDouble("MOD_GOAL", mWeightModGoal);
-            bundle.putString("USER_NAME", mUserName);
-            bundle.putString("IMAGE_PATH", mImgPath);
-            bundle.putInt("DAILY_CALORIES", mDailyCalories);
-            mDashDisplay.setArguments(bundle);
-
-            FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-            fTrans.replace(R.id.ph_dash_display, mDashDisplay, "dash_display");
-            fTrans.commit();
-        }
-    }
+//        mDailyCalories = NutritionCalcsUtil.getDailyCalories(mBmr, mIsActive, mWeightModGoal);
+//        if (mDailyCalories < 1000)
+//            Toast.makeText(this, "If you did that, you'd be eating less than 1000 calories! That's not sustainable!", Toast.LENGTH_LONG).show();
+//        else {
+//            //send to display fragment
+//            mDashDisplay = new DashDisplayFrag();
+//            Bundle bundle = new Bundle();
+//            bundle.putDouble("USER_BMR", mBmr);
+//            bundle.putDouble("MOD_GOAL", mWeightModGoal);
+//            bundle.putString("USER_NAME", mUserName);
+//            bundle.putString("IMAGE_PATH", mImgPath);
+//            bundle.putInt("DAILY_CALORIES", mDailyCalories);
+//            mDashDisplay.setArguments(bundle);
+//
+//            FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+//            fTrans.replace(R.id.ph_dash_display, mDashDisplay, "dash_display");
+//            fTrans.commit();
+//        }
+//    }
 }
