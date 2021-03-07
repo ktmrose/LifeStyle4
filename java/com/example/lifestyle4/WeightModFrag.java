@@ -22,7 +22,6 @@ public class WeightModFrag extends Fragment implements View.OnClickListener{
     double mWeightMod;
     Button mSubmitMod;
     EditText mModInput;
-    WeightModDataPasser mModDataPasser;
     TextView mWeightModDisplay;
     boolean isGainingWeight;
 
@@ -44,42 +43,37 @@ public class WeightModFrag extends Fragment implements View.OnClickListener{
         mAlertBuilder = new AlertDialog.Builder(getContext());
 
         mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
-        mViewModel.getUserData().observe(getActivity(), new Observer<UserData>() {
-            @Override
-            public void onChanged(UserData userData) {
 
-            }
-        });
-//        Bundle bundle = getArguments();
-//        if (bundle != null)
-//            isGainingWeight = bundle.getBoolean("GAIN_WEIGHT");
-//
-//        if (isGainingWeight)
-//            mWeightModDisplay.setText("" + "gain");
-//        else
-//            mWeightModDisplay.setText("" + "lose");
+        Bundle bundle = getArguments();
+        if (bundle != null)
+            isGainingWeight = bundle.getBoolean("GAIN_WEIGHT");
+
+        if (isGainingWeight)
+            mWeightModDisplay.setText("" + "gain");
+        else
+            mWeightModDisplay.setText("" + "lose");
 
         return view;
     }
 
-    public interface WeightModDataPasser {
-        public void onWeightModData(double weightMod);
-    }
+//    public interface WeightModDataPasser {
+//        public void onWeightModData(double weightMod);
+//    }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            mModDataPasser = (WeightModDataPasser) context;
-        } catch (Exception e) {
-            throw new ClassCastException(context.toString() + "must implement WeightModDataPasser");
-        }
-    }
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        try {
+//            mModDataPasser = (WeightModDataPasser) context;
+//        } catch (Exception e) {
+//            throw new ClassCastException(context.toString() + "must implement WeightModDataPasser");
+//        }
+//    }
 
     @Override
     public void onClick(View v) {
 
-        mWeightMod = Double.parseDouble(mModInput.getText().toString());
+        double weightModValue = Double.parseDouble(mModInput.getText().toString());
         
         if (mWeightMod > 2) {
 //
@@ -100,8 +94,14 @@ public class WeightModFrag extends Fragment implements View.OnClickListener{
         }
 
         if (isGainingWeight)
-            mModDataPasser.onWeightModData(mWeightMod);
+            mWeightMod = weightModValue;
         else
-            mModDataPasser.onWeightModData(mWeightMod*-1);
+            mWeightMod = -1*weightModValue;
+
+        updateUserData(mWeightMod);
+    }
+
+    private void updateUserData(double weightMod) {
+        mViewModel.setWeightMod(weightMod);
     }
 }

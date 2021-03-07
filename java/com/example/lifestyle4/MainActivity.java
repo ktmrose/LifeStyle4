@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //grab xml objects
         mSetFitGoalsBtn = findViewById(R.id.fitness_goals_btn);
         mSettingsBtn = findViewById(R.id.settings_btn);
         mWeatherBtn = findViewById(R.id.weather_btn);
@@ -64,21 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         mDashDisplay = dashDisp;
-        Intent recievedIntent = getIntent(); // from Settings
-        Bundle recievedBundle = recievedIntent.getBundleExtra("SETTINGS_BUNDLE");
-        if (recievedBundle != null) {
-            mUserName = recievedBundle.getString("USER_NAME");
-            mImgPath = recievedBundle.getString("IMAGE_PATH");
-            mBmr = recievedBundle.getDouble("USER_BMR");
-
-            Bundle bundle = new Bundle();
-            bundle.putDouble("USER_BMR", mBmr);
-            bundle.putDouble("MOD_GOAL", mWeightModGoal);
-            bundle.putString("USER_NAME", mUserName);
-            bundle.putString("IMAGE_PATH", mImgPath);
-            bundle.putInt("DAILY_CALORIES", mDailyCalories);
-            dashDisp.setArguments(bundle);
-        }
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         fTrans.replace(R.id.ph_dash_display, dashDisp, "dash_display");
@@ -86,8 +71,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Create the view model
         mViewModel = ViewModelProviders.of(this).get(LifeStyleViewModel.class);
-        //TODO: observer for isGaining/ isLosing weight
+        mViewModel.getUserData().observe(this, observeWeightGainOrLoss);
     }
+
+    final Observer<UserData> observeWeightGainOrLoss = new Observer<UserData>() {
+        @Override
+        public void onChanged(UserData userData) {
+            if (userData.isGainingWeight() || userData.isLosingWeight()){
+                Bundle weightModBundle = new Bundle();
+                if (userData.isGainingWeight())
+                    weightModBundle.putBoolean("GAIN_WEIGHT", true);
+                if (userData.isLosingWeight())
+                    weightModBundle.putBoolean("GAIN_WEIGHT", false);
+
+                WeightModFrag weightModFrag = new WeightModFrag();
+                weightModFrag.setArguments(weightModBundle);
+
+                FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+                fTrans.replace(R.id.ph_dash_display, weightModFrag, "weight_mod");
+                fTrans.commit();
+            }
+        }
+    };
 
     @Override
     public void onClick(View v) {
@@ -173,72 +178,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         savedInstanceState.getString("USER_NAME", "Karen");
         savedInstanceState.getBoolean("USER_ACTIVE", false);
     }
-
-//    @Override
-//    public void fitGoalsData(boolean isActive, double weightMod, int fragmentCode) {
-//        mIsActive = isActive;
-//        mWeightModGoal = weightMod;
-//        mDailyCalories = NutritionCalcsUtil.getDailyCalories(mBmr, mIsActive, mWeightModGoal);
-//
-//        Bundle modDisplayBundle = new Bundle();
-//        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-//
-//        if (fragmentCode == 1) { // lose weight
-//
-//            mWeightMod = new WeightModFrag();
-//            modDisplayBundle.putBoolean("GAIN_WEIGHT", false);
-//            mWeightMod.setArguments(modDisplayBundle);
-//            fTrans.replace(R.id.ph_dash_display, mWeightMod, "weight_loss_fragment");
-//        } else if (fragmentCode == 2) { // gain weight
-//
-//            mWeightMod = new WeightModFrag();
-//            modDisplayBundle.putBoolean("GAIN_WEIGHT", true);
-//            mWeightMod.setArguments(modDisplayBundle);
-//            fTrans.replace(R.id.ph_dash_display, mWeightMod, "weight_gain_Fragment");
-//        } else {
-//            System.out.println("Something went wrong when displaying fragments in Main Activity");
-//        }
-//
-//        fTrans.commit();
-//    }
-
-//    @Override
-//    public void onWeightModData(double weightMod) {
-//
-//        mWeightModGoal = weightMod;
-//
-//        if (mDailyCalories < 1000) {
-//            Toast.makeText(this, "I think you should update your settings", Toast.LENGTH_LONG).show();
-//
-//            //opens settings panel
-//            mSettings = new SettingsFrag();
-//            FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-//            fTrans.replace(R.id.ph_dash_display, mSettings, "settings");
-//            fTrans.commit();
-//
-//            //hide buttons
-//            mWeatherBtn.setVisibility(View.INVISIBLE);
-//            mSettingsBtn.setVisibility(View.INVISIBLE);
-//            return;
-//        }
-        
-//        mDailyCalories = NutritionCalcsUtil.getDailyCalories(mBmr, mIsActive, mWeightModGoal);
-//        if (mDailyCalories < 1000)
-//            Toast.makeText(this, "If you did that, you'd be eating less than 1000 calories! That's not sustainable!", Toast.LENGTH_LONG).show();
-//        else {
-//            //send to display fragment
-//            mDashDisplay = new DashDisplayFrag();
-//            Bundle bundle = new Bundle();
-//            bundle.putDouble("USER_BMR", mBmr);
-//            bundle.putDouble("MOD_GOAL", mWeightModGoal);
-//            bundle.putString("USER_NAME", mUserName);
-//            bundle.putString("IMAGE_PATH", mImgPath);
-//            bundle.putInt("DAILY_CALORIES", mDailyCalories);
-//            mDashDisplay.setArguments(bundle);
-//
-//            FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-//            fTrans.replace(R.id.ph_dash_display, mDashDisplay, "dash_display");
-//            fTrans.commit();
-//        }
-//    }
 }

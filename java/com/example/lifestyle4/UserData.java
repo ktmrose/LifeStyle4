@@ -66,7 +66,7 @@ public class UserData {
         return mWeightMod;
     }
 
-    public void setWeightMod(int weightMod) {
+    public void setWeightMod(double weightMod) {
         this.mWeightMod = weightMod;
     }
 
