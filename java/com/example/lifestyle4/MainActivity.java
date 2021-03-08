@@ -118,7 +118,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.fitness_goals_btn: {
 
-                if (mViewModel.getUserData().getValue() == null) {
+                WeatherFrag weatherFragActive = (WeatherFrag) getSupportFragmentManager().findFragmentByTag("weather");
+
+                if (weatherFragActive != null && !weatherFragActive.isVisible() && mViewModel.getUserData().getValue() == null) {
                     Toast.makeText(this, "Fill out the settings page first.", Toast.LENGTH_SHORT).show();
                     return;
                 }
