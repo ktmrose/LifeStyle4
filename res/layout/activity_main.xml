@@ -23,8 +23,8 @@
 
     <ImageButton
         android:id="@+id/fitness_goals_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginVertical="32dp"
         android:layout_marginHorizontal="16dp"
         android:adjustViewBounds="true"
@@ -39,23 +39,23 @@
 
     <ImageButton
         android:id="@+id/weather_btn"
-        android:layout_width="@android:dimen/app_icon_size"
-        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginVertical="16dp"
         android:layout_marginHorizontal="16dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:background="#157359"
+        android:background="@drawable/rounded_corner_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/partially_cloudy" />
 
     <ImageButton
         android:id="@+id/settings_btn"
-        android:layout_width="@android:dimen/app_icon_size"
-        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginVertical="16dp"
-        android:background="#157359"
+        android:background="@drawable/rounded_corner_green"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
