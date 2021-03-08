@@ -32,6 +32,11 @@ public class LifeStyleViewModel extends AndroidViewModel {
         mRepo.setUserData(user);
     }
 
+    public void setLocation(String location){
+
+        mRepo.setLocation(location);
+    }
+
     public void setWeightMod(double weightMod) {
         UserData userDataCopy = mUserData.getValue();
         userDataCopy.setWeightMod(weightMod);

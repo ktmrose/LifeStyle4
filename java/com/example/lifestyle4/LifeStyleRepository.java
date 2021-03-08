@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-public class LifeStyleRepository implements LocationListener {
+public class LifeStyleRepository implements LocationListener{
     private final MutableLiveData<UserData> mUserData = new MutableLiveData<>();
     private final MutableLiveData<WeatherData> mWeatherData = new MutableLiveData<>();
 
@@ -32,6 +32,7 @@ public class LifeStyleRepository implements LocationListener {
     private String mJsonWeather;
 
     private LocationManager mLocationManager;
+
     private final Context mContext;
 
     private WeatherDAO mWeatherDao;
@@ -51,19 +52,18 @@ public class LifeStyleRepository implements LocationListener {
         mWeatherDao = db.weatherDao();
         mContext = application;
 
-        mLocationManager = (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
+//        mLocationManager = (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//        }
+//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
 
-        mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, this);
 
         if (mLocation != null)
             loadWeatherData();
@@ -80,33 +80,7 @@ public class LifeStyleRepository implements LocationListener {
         new insertUserTask(mUserDao).execute(userTable);
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
 
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-
-        //grab location name
-        Geocoder gcd = new Geocoder(mContext, Locale.getDefault());
-        List<Address> addresses;
-        try {
-            addresses = gcd.getFromLocation(latitude, longitude, 1);
-            if (addresses.size() > 0) {
-                mLocation = addresses.get(0).getLocality();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
-
-    @Override
-    public void onProviderEnabled(String provider) { }
-
-    @Override
-    public void onProviderDisabled(String provider) { }
 
     private void insertWeather(){
         WeatherDataTable wdt = new WeatherDataTable(mLocation, mJsonWeather);
@@ -116,6 +90,11 @@ public class LifeStyleRepository implements LocationListener {
     private void loadWeatherData() {
         String locationNameQuery = mLocation.replaceAll(" ", "&");
         new FetchWeatherTask(this).execute(locationNameQuery);
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+        loadWeatherData();
     }
 
     //TODO: Turn AsyncTask into WorkManager
@@ -179,5 +158,33 @@ public class LifeStyleRepository implements LocationListener {
             return null;
         }
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+
+        //grab location name
+        Geocoder gcd = new Geocoder(this.mContext, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = gcd.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+                getUserData().getValue().setLocation(addresses.get(0).getLocality());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
+
+    @Override
+    public void onProviderEnabled(String provider) { }
+
+    @Override
+    public void onProviderDisabled(String provider) { }
 }
 
