@@ -1,126 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dash_display_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7D6C7"
-    >
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/hello"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:background="#FCCCCA"
-        android:text="Hello"
-        android:textSize="18sp"
-        android:fontFamily="casual"
-        app:layout_constraintBottom_toTopOf="@+id/calorieGoalStatic"
-        app:layout_constraintEnd_toStartOf="@+id/userName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/userName"
-        android:background="#FCCCCA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:text="Karen"
-        android:textSize="18sp"
-        android:fontFamily="casual"
-        app:layout_constraintBaseline_toBaselineOf="@+id/hello"
-        app:layout_constraintEnd_toStartOf="@id/profilePic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/profilePic" />
+        <TextView
+            android:id="@+id/hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:fontFamily="casual"
+            android:text="Hello" />
 
-    <ImageView
-        android:id="@+id/profilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corner_pink"
+            android:textSize="18sp"
+            android:fontFamily="casual"
+            android:textAlignment="center"
+            android:text="Karen" />
+
+        <ImageView
+            android:id="@+id/profilePic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            tools:srcCompat="@tools:sample/avatars" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/calorieGoalStatic"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your calorie goal today is"
         android:layout_marginVertical="16dp"
+        android:text="Your calorie goal today is"
         android:textSize="18sp"
+        android:layout_weight="1"
         android:fontFamily="casual"
-        android:background="#FCCCCA"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePic" />
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/calorieGoalDynamic"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="numCalories"
-        android:fontFamily="casual"
-        android:background="#FCCCCA"
-        android:textSize="26sp"
         android:layout_marginVertical="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calorieGoalStatic" />
+        android:textAlignment="center"
+        android:layout_weight="1"
+        android:textSize="26sp"
+        android:fontFamily="casual"
+        android:background="@drawable/rounded_corner_pink"
+        android:text="numCalories" />
 
     <TextView
         android:id="@+id/to"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
-        android:text="to"
+        android:layout_weight="1"
         android:textSize="18sp"
         android:fontFamily="casual"
-        android:background="#FCCCCA"
-        app:layout_constraintBaseline_toBaselineOf="@+id/fitnessGoalDynamic"
-        app:layout_constraintEnd_toStartOf="@+id/fitnessGoalDynamic"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textAlignment="center"
+
+        android:text="to" />
 
     <TextView
         android:id="@+id/fitnessGoalDynamic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
-        android:text="fitnessGoal"
-        android:fontFamily="casual"
+        android:background="@drawable/rounded_corner_pink"
+        android:layout_weight="1"
         android:textSize="18sp"
-        android:background="#FCCCCA"
+        android:fontFamily="casual"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calorieGoalDynamic" />
+        android:text="fitnessGoal" />
 
     <TextView
         android:id="@+id/bmrStatic"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Basal metabolic rate"
         android:layout_marginVertical="16dp"
+        android:layout_weight="1"
         android:textSize="18sp"
-        android:background="#FCCCCA"
         android:fontFamily="casual"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fitnessGoalDynamic" />
+        android:textAlignment="center"
+        android:text="Basal metabolic rate" />
 
     <TextView
         android:id="@+id/bmrDynamic"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
-        android:text="bmr"
+        android:background="@drawable/rounded_corner_pink"
+        android:layout_weight="1"
         android:textSize="22sp"
         android:fontFamily="casual"
-        android:background="#FCCCCA"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bmrStatic" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textAlignment="center"
+        android:text="bmr" />
+</LinearLayout>
