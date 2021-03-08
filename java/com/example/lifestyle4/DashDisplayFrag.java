@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,8 @@ public class DashDisplayFrag extends Fragment {
     private ImageView mIvImgThumb;
     private TextView mTvUserName, mTvDailyCalories, mTvFitnessGoal, mTvBMR;
     private LifeStyleViewModel mViewModel;
+    private boolean mUserIsActive;
+    private double mWeightMod;
 
     @Nullable
     @Override
@@ -55,14 +58,21 @@ public class DashDisplayFrag extends Fragment {
                 mTvFitnessGoal.setText("change your weight by " + userData.getWeightMod() + " pounds this week.");
 
                 mBMR = getBmr(userData.userIsFemale(), userData.getWeight(), userData.getHeightFt(), userData.getHeightIn(), userData.getAge());
-                mDailyCalories = getCaloricNeeds(mBMR, userData.userIsActive(), userData.getWeightMod());
-                mTvBMR.setText("" + mBMR);
-                mTvDailyCalories.setText("" + mDailyCalories);
+
+                mUserIsActive = userData.userIsActive();
+                mWeightMod = userData.getWeightMod();
+
             }
         });
         if(mUserName != null) {
             mTvUserName.setText(mUserName);
         }
+        if(mBMR > 0) {
+            mDailyCalories = getCaloricNeeds(mBMR, mUserIsActive, mWeightMod);
+            mTvBMR.setText("" + mBMR);
+            mTvDailyCalories.setText("" + mDailyCalories);
+        }
+
         return view;
     }
 
@@ -71,6 +81,13 @@ public class DashDisplayFrag extends Fragment {
     }
 
     private int getCaloricNeeds(double bmr, boolean isActive, double poundsMod){
-        return NutritionCalcsUtil.getDailyCalories(bmr, isActive, poundsMod);
+        int caloricNeeds = NutritionCalcsUtil.getDailyCalories(bmr, isActive, poundsMod);
+        if (caloricNeeds < 1000) {
+            Toast.makeText(getContext(), "Weight management goal adjusted: Caloric intake is too little for sustainability.", Toast.LENGTH_LONG).show();
+            double suggestedWeightMod = NutritionCalcsUtil.findWeightModGoal(bmr, isActive);
+            mViewModel.setWeightMod(suggestedWeightMod);
+            return 1000; //this is the minimum allotted caloric daily intake.
+        }
+        return caloricNeeds;
     }
 }

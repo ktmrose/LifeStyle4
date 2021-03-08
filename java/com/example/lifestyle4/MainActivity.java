@@ -91,6 +91,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fTrans.replace(R.id.ph_dash_display, weightModFrag, "weight_mod");
                 fTrans.commit();
             }
+
+            //TODO: go back to dash display after weightMod updated
+            mWeightModGoal = userData.getWeightMod();
+            WeightModFrag currentFrag = (WeightModFrag) getSupportFragmentManager().findFragmentByTag("weight_mod");
+            if (currentFrag != null && currentFrag.isVisible()) {
+                FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+                fTrans.replace(R.id.ph_dash_display, mDashDisplay, "dash_display");
+                fTrans.commit();
+            }
+
+            /*
+            WeightModFrag handles this error upon user input, this catches this error outside of WeightModFrag
+             */
+            if (mWeightModGoal > 2 || mWeightModGoal < -2) {
+                Toast.makeText(getApplicationContext(), "The settings you entered may give inaccurate recommendation. Please update.", Toast.LENGTH_LONG).show();
+                mSettings = new SettingsFrag();
+                FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
+                fTrans.replace(R.id.ph_dash_display, mSettings, "settings");
+                fTrans.commit();
+            }
         }
     };
 

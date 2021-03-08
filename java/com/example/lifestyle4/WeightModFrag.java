@@ -73,9 +73,12 @@ public class WeightModFrag extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
+        if (mModInput.getText().toString().equals("")) {
+            return;
+        }
         double weightModValue = Double.parseDouble(mModInput.getText().toString());
         
-        if (mWeightMod > 2) {
+        if (weightModValue > 2) {
 //
 //            mAlertBuilder.setMessage("Easy there! Try making a more maintainable goal. Try aiming for 2 pounds/week or less?");
 //            mAlertBuilder.setTitle("Your weight goal is unsustainable");

@@ -60,4 +60,21 @@ public class NutritionCalcsUtil {
         else
             return (int) ((1.2*bmr) + (poundsMod*500));
     }
+
+    /**
+     * For caloric intake of 1000 calories/day, finds a weekly weight modification goal based on BMR and user activity level.
+     * @param bmr user's BMR. See getBmr()
+     * @param isActive user's activity level, defined as at least 30 minutes of strenuous exercise per day
+     * @return a weekly weight modification goal for a caloric intake of 1000/day
+     */
+    public static double findWeightModGoal(double bmr, boolean isActive) {
+        double bmrMod;
+        if (isActive)
+            bmrMod = 1.725;
+        else
+            bmrMod = 1.2;
+
+        //calories is set to 1000, the minimum number of calories
+        return ((1000 - (bmrMod*bmr))/500);
+    }
 }

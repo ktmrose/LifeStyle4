@@ -76,10 +76,8 @@ public class SettingsFrag extends Fragment implements View.OnClickListener {
                 if (userData == null)
                     return;
 
-                Bitmap thumbNailImg = BitmapFactory.decodeFile(userData.getImgPath());
-                if (thumbNailImg != null) {
+                if (userData.getImgPath() != null) {
                     mImgPath = userData.getImgPath();
-                    mIvProfilePic.setImageBitmap(thumbNailImg);
                 }
 
                 if(userData.getName() != null) {
@@ -120,6 +118,11 @@ public class SettingsFrag extends Fragment implements View.OnClickListener {
         } else {
             mMaleBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
             mFemaleBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.light_green));
+        }
+
+        Bitmap thumbNailImg = BitmapFactory.decodeFile(mImgPath);
+        if (thumbNailImg != null) {
+            mIvProfilePic.setImageBitmap(thumbNailImg);
         }
 
         return view;
