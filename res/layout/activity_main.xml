@@ -28,7 +28,7 @@
         android:layout_marginVertical="32dp"
         android:layout_marginHorizontal="16dp"
         android:adjustViewBounds="true"
-        android:background="#BD8E36"
+        android:background="@drawable/rounded_corner_gold"
         android:scaleType="fitCenter"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
