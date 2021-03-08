@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //fragments dynamically displayed
     SetFitGoals mSetFitGoals;
-    WeightModFrag mWeightMod;
     DashDisplayFrag mDashDisplay;
     SettingsFrag mSettings;
     WeatherFrag mWeather;
@@ -118,6 +117,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fitness_goals_btn: {
+
+                if (mViewModel.getUserData().getValue() == null) {
+                    Toast.makeText(this, "Fill out the settings page first.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 SetFitGoals currentFrag = (SetFitGoals) getSupportFragmentManager().findFragmentByTag("set_fit_goals");
                 FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();

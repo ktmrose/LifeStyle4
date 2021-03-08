@@ -45,6 +45,9 @@ public class LifeStyleViewModel extends AndroidViewModel {
 
     public void setUserActivity(boolean isActive){
         UserData userDataCopy = mUserData.getValue();
+        if (userDataCopy == null) {
+            userDataCopy = new UserData();
+        }
         userDataCopy.setIsActive(isActive);
         setUserData(userDataCopy);
     }
