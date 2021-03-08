@@ -183,23 +183,40 @@ public class SettingsFrag extends Fragment implements View.OnClickListener {
                 mUserName = usernameInput;
 
                 //user is only allowed to enter numbers
+                if (mEtAge.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Save aborted: Please enter age", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
                 mAge = Integer.parseInt(mEtAge.getText().toString());
                 if (mAge < 20) {
                     Toast.makeText(getContext(), "Save aborted: Nutrition calculations for persons at least 20 years old", Toast.LENGTH_SHORT).show();
                     break;
                 }
 
+                if (mEtHeightFeet.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Save aborted: Please enter height (feet)", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 mHeightFeet = Integer.parseInt(mEtHeightFeet.getText().toString());
                 if (mHeightFeet < 7 || mHeightFeet > 4) {
                     Toast.makeText(getContext(), "Warning: Nutrition calculations for this height range may not be accurate", Toast.LENGTH_LONG).show();
                 }
 
+                if (mEtHeightInches.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Save aborted: Please enter height (inches)", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 mHeightInches = Integer.parseInt(mEtHeightInches.getText().toString());
 
                 if (mHeightInches <= 12) {
                     Toast.makeText(getContext(), "Warning: Did you mean to type a number greater than 12 for inches?", Toast.LENGTH_LONG).show();
                 }
 
+                if (mEtWeight.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Save aborted: Please enter weight", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 mWeight = Integer.parseInt(mEtWeight.getText().toString());
                 if (mHeightFeet < 300 || mHeightFeet > 90) {
                     Toast.makeText(getContext(), "Warning: Nutrition calculations for this weight range may not be accurate", Toast.LENGTH_LONG).show();
