@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -111,6 +112,10 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
             case R.id.excerciseYes: {
 
                 mIsFit = true;
+                if (mViewModel.getUserData().getValue() == null) {
+                    Toast.makeText(getContext(), "Please update your settings.", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 mViewModel.setUserActivity(mIsFit);
                 mYesBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
                 mNoBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
@@ -119,6 +124,10 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
             case R.id.excerciseNo: {
 
                 mIsFit = false;
+                if (mViewModel.getUserData().getValue() == null) {
+                    Toast.makeText(getContext(), "Please update your settings.", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 mViewModel.setUserActivity(mIsFit);
                 mNoBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.gold));
                 mYesBtn.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pink_accent));
@@ -163,6 +172,10 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
 
     private void updateUserData(){
 
+        if (mViewModel.getUserData().getValue() == null) {
+            Toast.makeText(getContext(), "Please update your settings.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mViewModel.setWeightModGoal(mIsGainingWeight, mIsLosingWeight, mIsFit);
     }
 

@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.GnssMeasurementsEvent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -40,6 +43,9 @@ public class WeatherFrag extends Fragment implements View.OnClickListener, Locat
     LocationManager mLocationManager;
 
     LifeStyleViewModel mViewModel;
+
+    public WeatherFrag() {
+    }
 
 
     @Nullable
@@ -123,11 +129,55 @@ public class WeatherFrag extends Fragment implements View.OnClickListener, Locat
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
 
     @Override
-    public void onProviderEnabled(String provider) { }
+    public void onProviderEnabled(String provider) {
+    }
 
     @Override
-    public void onProviderDisabled(String provider) { }
+    public void onProviderDisabled(String provider) {
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onPause() {
+        super.onPause();
+        //TODO: unregister location manager
+        mLocationManager.unregisterGnssMeasurementsCallback(mGnssCallback);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onResume() {
+        super.onResume();
+        //TODO: register location manager
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLocationManager.registerGnssMeasurementsCallback(mGnssCallback);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private GnssMeasurementsEvent.Callback mGnssCallback = new GnssMeasurementsEvent.Callback() {
+        @Override
+        public void onGnssMeasurementsReceived(GnssMeasurementsEvent eventArgs) {
+            super.onGnssMeasurementsReceived(eventArgs);
+        }
+
+        @Override
+        public void onStatusChanged(int status) {
+            super.onStatusChanged(status);
+        }
+    };
+
 }
+
