@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 public class SetFitGoals extends Fragment implements View.OnClickListener{
 
     private Button mYesBtn, mNoBtn, mLoseWeight, mMaintainWeight, mGainWeight;
-    private boolean mIsFit, mIsLosingWeight, mIsGainingWeight;
+    private boolean mIsFit, mIsLosingWeight, mIsGainingWeight, mIsTablet;
     private double mWeightMod;
     private LifeStyleViewModel mViewModel;
 
@@ -28,6 +28,7 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.set_fitness_goals, container, false);
+        mIsTablet = getResources().getBoolean(R.bool.isTablet);
 
         mYesBtn = view.findViewById(R.id.excerciseYes);
         mNoBtn = view.findViewById(R.id.excerciseNo);

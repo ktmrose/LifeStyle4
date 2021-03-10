@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#004A33"
+    android:fontFamily="casual"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/weather_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/partially_cloudy" />
+
+    <TextView
+        android:id="@+id/weather_condition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="44sp"
+        android:background="#157359"
+        android:fontFamily="casual"
+        android:textColor="#e6e6e6"
+        android:textAlignment="center"
+        android:text="---" />
+
+    <TextView
+        android:id="@+id/current_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="casual"
+        android:textSize="36sp"
+        android:background="#157359"
+        android:textColor="#e6e6e6"
+        android:textAlignment="center"
+        android:text="in ..." />
+
+    <TextView
+        android:id="@+id/current_temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="casual"
+        android:textSize="44sp"
+        android:background="#157359"
+        android:textColor="#e6e6e6"
+        android:textAlignment="center"
+        android:text="---" />
+
+    <TextView
+        android:id="@+id/timestamp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="24sp"
+        android:fontFamily="casual"
+        android:background="#157359"
+        android:textColor="#e6e6e6"
+        android:textAlignment="center"
+        android:text="---" />
+
+    <TextView
+        android:id="@+id/high_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="casual"
+        android:textSize="36sp"
+        android:background="#157359"
+        android:textColor="#e6e6e6"
+        android:textAlignment="center"
+        android:text="Today's high ..." />
+
+    <TextView
+        android:id="@+id/low_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="36sp"
+        android:fontFamily="casual"
+        android:background="#157359"
+        android:textColor="#e6e6e6"
+        android:textAlignment="center"
+        android:text="Today's low ..." />
+
+    <ProgressBar
+        android:id="@+id/progress_Bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/refresh_weather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="casual"
+        android:backgroundTint="#BD8E36"
+        android:textSize="36sp"
+        android:text="Refresh" />
+</LinearLayout>

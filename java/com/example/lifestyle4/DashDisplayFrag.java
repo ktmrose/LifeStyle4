@@ -42,6 +42,11 @@ public class DashDisplayFrag extends Fragment {
         mTvBMR.setText("" + "--");
         mTvFitnessGoal.setText("" + "--");
         mTvDailyCalories.setText("" + "--");
+        if (mImgPath == null) {
+            mIvImgThumb.setVisibility(View.INVISIBLE);
+        } else {
+            mIvImgThumb.setVisibility(View.VISIBLE);
+        }
 
         mViewModel = ViewModelProviders.of(getActivity()).get(LifeStyleViewModel.class);
         mViewModel.getUserData().observe(getActivity(), new Observer<UserData>() {
@@ -51,6 +56,7 @@ public class DashDisplayFrag extends Fragment {
                 if (thumbNailImg != null) {
                     mImgPath = userData.getImgPath();
                     mIvImgThumb.setImageBitmap(thumbNailImg);
+                    mIvImgThumb.setVisibility(View.VISIBLE);
                 }
 
                 mUserName = userData.getName();
