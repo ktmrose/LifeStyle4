@@ -95,7 +95,7 @@ public class LifeStyleRepository extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        if(action.equals(Intent.ACTION_POWER_CONNECTED)) {
+        if(action.equals(Intent.ACTION_POWER_CONNECTED) && getUserData().getValue() != null) {
 
             File userFile = userDataToFile();
             Amplify.Storage.uploadFile("User_Data",
