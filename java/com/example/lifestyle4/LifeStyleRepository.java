@@ -2,7 +2,9 @@ package com.example.lifestyle4;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,27 +13,31 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
+import com.amplifyframework.core.Amplify;
+
 import org.json.JSONException;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-public class LifeStyleRepository implements LocationListener{
+public class LifeStyleRepository extends BroadcastReceiver{
     private final MutableLiveData<UserData> mUserData = new MutableLiveData<>();
     private final MutableLiveData<WeatherData> mWeatherData = new MutableLiveData<>();
 
     //for weather
     private String mLocation;
     private String mJsonWeather;
-
-    private LocationManager mLocationManager;
 
     private final Context mContext;
 
@@ -52,26 +58,12 @@ public class LifeStyleRepository implements LocationListener{
         mWeatherDao = db.weatherDao();
         mContext = application;
 
-//        mLocationManager = (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
-//        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(application, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//        }
-//        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
-
-
         if (mLocation != null)
             loadWeatherData();
         else {
             mLocation = "Salt Lake City";
             loadWeatherData();
         }
-
     }
 
     public void setUserData(UserData userData) {
@@ -79,8 +71,6 @@ public class LifeStyleRepository implements LocationListener{
         UserDataTable userTable = new UserDataTable(userData);
         new insertUserTask(mUserDao).execute(userTable);
     }
-
-
 
     private void insertWeather(){
         WeatherDataTable wdt = new WeatherDataTable(mLocation, mJsonWeather);
@@ -94,10 +84,41 @@ public class LifeStyleRepository implements LocationListener{
 
     public void setLocation(String location) {
         mLocation = location;
+        //TODO: set location for user
         loadWeatherData();
     }
 
-    //TODO: Turn AsyncTask into WorkManager
+    /*
+    Monitors device connection to power and pushes to s3 bucket
+     */
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+
+        if(action.equals(Intent.ACTION_POWER_CONNECTED)) {
+
+            File userFile = userDataToFile();
+            Amplify.Storage.uploadFile("User_Data",
+                    userFile,
+                    result -> Log.i("LifeStyleApp", "Successfully uploaded: " + result.getKey()),
+                    storageFailure -> Log.e("LifeStyleApp", "Upload failed", storageFailure));
+        }
+    }
+
+    private File userDataToFile() {
+
+        File userFile = new File(mContext.getFilesDir(), "UserData");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(userFile));
+            writer.append(getUserData().getValue().toJson());
+            writer.close();
+        } catch (Exception exception) {
+            Log.e("LifeStyleApp", "Upload failed", exception);
+        }
+        return userFile;
+    }
+
+    //TODO: Turn AsyncTask into WorkManager that fetches weather data.
     private static class FetchWeatherTask extends AsyncTask<String, Void, String> {
 
         private WeakReference<LifeStyleRepository> mRepo;
@@ -137,6 +158,9 @@ public class LifeStyleRepository implements LocationListener{
         }
     }
 
+    /*
+    Methods below add weather and user data respectively to Room database
+     */
     private static class insertWeatherTask extends AsyncTask<WeatherDataTable, Void, Void> {
 
         private WeatherDAO mAsyncWeatherDao;
@@ -158,33 +182,5 @@ public class LifeStyleRepository implements LocationListener{
             return null;
         }
     }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-
-        //grab location name
-        Geocoder gcd = new Geocoder(this.mContext, Locale.getDefault());
-        List<Address> addresses;
-        try {
-            addresses = gcd.getFromLocation(latitude, longitude, 1);
-            if (addresses.size() > 0) {
-                getUserData().getValue().setLocation(addresses.get(0).getLocality());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
-
-    @Override
-    public void onProviderEnabled(String provider) { }
-
-    @Override
-    public void onProviderDisabled(String provider) { }
 }
 

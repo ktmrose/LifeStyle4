@@ -44,10 +44,6 @@ public class WeatherFrag extends Fragment implements View.OnClickListener, Locat
 
     LifeStyleViewModel mViewModel;
 
-    public WeatherFrag() {
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -103,8 +99,7 @@ public class WeatherFrag extends Fragment implements View.OnClickListener, Locat
     @Override
     public void onClick(View v) {
 
-        //TODO: maybe get rid of button and fix view in constructor
-
+        //TODO: maybe get rid of button and fix view in constructor?
         if (mLocationName != null)
             mViewModel.setLocation(mLocationName);
     }

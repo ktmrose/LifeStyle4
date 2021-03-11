@@ -1,5 +1,8 @@
 package com.example.lifestyle4;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class UserData {
     private String mName, mImgPath, mLocation;
     private int mAge, mHeightFt, mHeightIn, mWeight;
@@ -91,4 +94,20 @@ public class UserData {
     public boolean isLosingWeight() { return mIsLosingWight; }
 
     public void setIsLosingWeight(boolean mIsLosingWight) { this.mIsLosingWight = mIsLosingWight; }
+
+    public String toJson() throws JSONException {
+
+        JSONObject obj = new JSONObject();
+        obj.put("Name", mName);
+        obj.put("ImagePath", mImgPath);
+        obj.put("Location", mLocation);
+        obj.put("Age", mAge);
+        obj.put("HeightFt", mHeightFt);
+        obj.put("HeightIn", mHeightIn);
+        obj.put("Weight", mWeight);
+        obj.put("WeightMod", mWeightMod);
+        obj.put("IsActive", mIsActive);
+        obj.put("IsFemale", mIsFemale);
+        return String.valueOf(obj);
+    }
 }
