@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fTrans.commit();
             }
 
-            //TODO: go back to dash display after weightMod updated
             mWeightModGoal = userData.getWeightMod();
             WeightModFrag currentFrag = (WeightModFrag) getSupportFragmentManager().findFragmentByTag("weight_mod");
             if (currentFrag != null && currentFrag.isVisible()) {

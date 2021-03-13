@@ -139,7 +139,6 @@ public class WeatherFrag extends Fragment implements View.OnClickListener, Locat
     @Override
     public void onPause() {
         super.onPause();
-        //TODO: unregister location manager
         mLocationManager.unregisterGnssMeasurementsCallback(mGnssCallback);
     }
 
@@ -147,7 +146,6 @@ public class WeatherFrag extends Fragment implements View.OnClickListener, Locat
     @Override
     public void onResume() {
         super.onResume();
-        //TODO: register location manager
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

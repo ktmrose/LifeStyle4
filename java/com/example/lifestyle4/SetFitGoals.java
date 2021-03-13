@@ -108,7 +108,6 @@ public class SetFitGoals extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        //TODO: move setting of user data to separate thread?
         switch (v.getId()) {
             case R.id.excerciseYes: {
 
